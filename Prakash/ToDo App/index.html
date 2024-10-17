@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="index.css">
+  <title>Todo App</title>
+</head>
+<body>
+  <h1 id="main-heading">Todo App</h1>                                                     <!--heading likhe -->
+  <div class="grid-container">                                                            <!--ek div bnaye -->
+    <input id="todo-input" type="text" placeholder="Enter Todo here">                     <!--ye user input ke liye -->
+    <input id="todo-date" type="date">                                                    <!--ye date select krne ke liye -->
+    <button class='btn-todo' onclick="addTodo();">Add</button>                            <!--add button bnaye -->
+  </div>                                                                                  <!--div close kiye -->
+
+  <div class="todo-container grid-container"></div>                            <!--ye div body ke content ke liye, to-do items ke liye -->
+
+  <script src="index.js"></script>
+</body>
+</html>

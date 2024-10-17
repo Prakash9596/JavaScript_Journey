@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Cricket Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1> CRICKET GAME</h1>
+  <button class="button" onclick=" u_choice ='Bat'; c_choice = generateRandom(); generateResult(u_choice,c_choice); ">
+    <img class="button_image" src="bat.png" alt="bat-image"></button>
+
+  <button class="button" onclick="u_choice ='Ball'; c_choice = generateRandom(); generateResult(u_choice,c_choice); ">
+    <img class="button_image" src="ball.png" alt="ball-image"></button>
+
+  <Button class="button" onclick="u_choice ='Wicket'; c_choice = generateRandom(); generateResult(u_choice,c_choice); ">
+    <img class="button_image" src="stump.png" alt="wicket-image"></Button>
+  
+    <div>
+      <button class="reset_button" onclick="localStorage.removeItem('score'); 
+      score.win= 0; score.loss=0; score.tied=0; 
+      document.querySelector('#your_input').innerText = 'Please select your Choice ';
+      document.querySelector('#computer_input').innerText = '';
+      document.querySelector('#result').innerText = '';
+      document.querySelector('#report_calci').innerText = '';
+      ">Restart Game</button>
+    </div>
+
+  <h1 id="your_input"></h1>
+  <h1 id="computer_input"></h1>
+  <h1 id="result"></h1>
+  <h1 id="report_calci"></h1>
+  <script src="joy.js"></script>
+</body>
+</html>

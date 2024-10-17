@@ -1,0 +1,29 @@
+body{
+  text-align: center;
+  background-color: aqua;
+}
+.button{
+  height: 200px;
+  width: 200px;
+  border-radius: 50px;
+  border: none;
+  background-color: rgba(16, 241, 57, 0.938);
+  margin: 5px;
+  cursor: pointer;
+}
+#result{
+  color: red;
+}
+.reset_button{
+  margin-top: 20px;
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgba(196, 241, 16, 0.938);
+  cursor: pointer;
+}
+.button_image{
+  height: 150px;
+  border: none;
+}

@@ -846,6 +846,557 @@ let squares = arr.map(num => num*num);
 console.log(squares);
 
 
+# Chapter:11
+
+# 11.37 Prototypes in JS
+
+--> Kisi bhi javaScript object ke andar kuchh (properties and methods) ho skte hain.
+    Aur har JS objects me by-default ek special property hota hai called proptotype.
+    Ye prototype khud me hi ek object hota hai ya (reference to an object) jiske andar 
+    by-default kuchh (properties and methods) hote hain.
+
+--> We can set prototype using _ _ proto _ _
+
+const employee = {
+    calcTax(){
+        console.log ('Tax rate is 10%');
+    }
+}
+
+const karanArjun = {
+    salary: 50,000,
+};
+
+karanArjun.__proto__ = employee;      //ab karanArjun object ke andar employee object ka sara (properties and methods) aa gya
+karanArjun.calcTax();                 // calling calTax() using karanArjun object [o/p: Tax rate is 10%]
+
+
+const karanArjun2 = {
+    salary: 60,000,
+    calcTax(){
+        console.log ('Tax rate is 15%');
+    }
+};
+karanArjun2.__proto__ = employee;
+karanArjun2.calcTax();                 [o/p: Tax rate is 15%]
+
+Note: *If object & prototype have same method, object’s method will be used.
+
+
+# 11.38 Classes in JS
+--> Class is a program-code template for creating objects.
+    Those objects will have some (properties and methods) inside it.
+
+--> Class is like a blueprint/template for objects.
+    Agar similar tarah ka dher sara object create krna hai to sbke liye ek template bna lenge ki wo kaisa hoga,
+    whi template class hai.
+
+
+class toyotaCar {
+    constructor(){
+        console.log('creating new object');
+    }
+    start(){
+        console.log('start');
+    }
+    stop(){
+        console.log('stop');
+    }
+}
+let fortuner = new toyotaCar();  //new is a keyword to create an object from class.
+let lexus = new toyotaCar();     //same new object bna diye same class se
+
+--> Constructor( ) method is : [automatically invoked by new keyword] [initializes object]
+    Jb hm class ke andar koi v constructor create nhi krte hain to ye new keyword automatically create kr deta h.
+
+--> Jb bhi hm object bnate hain to sbse pahle Constructor() call hota hai.
+
+# 11.39 Inheritance in JS
+--> Inheritance is passing down properties & methods from parent class to child class.
+    *If Child & Parent have same method, child’s method will be used. [Method Overriding]
+
+class parent{
+    hello(){
+        console.log('hello man!');
+    }
+}
+class child extends parent {};
+let obj = new child();
+obj.hello();       [o/p: hello man]
+------------------------------------------
+class parent{
+    constructor(){
+        this.species = 'homo sapiens';
+    }
+    hello(){
+        console.log('hello man!');
+    }
+}
+class child2 extends parent {
+    hello(){
+        console.log('hello hello!');
+    }
+    greeting(){
+        console.log('good morning');
+    }
+}
+let obj2 = new child2();
+obj2.hello();                           [o/p: hello hello] [method overriding]
+obj2.greeting();                        [good morning] [iska apna defined function bhi use kr liye]
+obj2.species;                           [homo sapiens]
+
+
+# 11.40 Inheritance in JS
+--> super Keyword
+    The super keyword is used to call the constructor of its parent class to access the parent's properties and methods.
+
+
+class person{
+    constructor(){
+        console.log('in parent constructor');
+        this.species = 'homo sapiens';
+    }
+    eat(){
+        console.log('eat');
+    }
+}
+class engineer {
+    constructor(branch){
+        super();                                    //super() is used to call parent class constructor,  
+        console.log('in child constructor');
+        this.branch = branch;              
+    } //child class ka constructor call krne se pahle parent class ka constructor call krna pdta h nhi to error aayega
+    work(){
+        console.log('work');
+    }
+}
+let engObj = new engineer('electrical engineer');
+
+
+# 11.41 Error Handling (try-catch)
+ let a =5;
+ let b =10;
+ console.log(`a= ${a}`);
+ console.log(`b= ${b}`);
+ console.log(`a+b= ${a+b}`);
+ try{
+  console.log(`c= ${c}`);
+ }catch(err){
+    console.log(err);
+ }                              //fayda ye hua ki agar ish line me error aata v h to v aage ka lines execute hoga
+ console.log(`a-b= ${a-b}`);
+ console.log(`a*b= ${a*b}`);
+ console.log(`a*a= ${a*a}`);
+ console.log(`a*a*a= ${a*a*a}`);
+
+
+# Chapter:12
+
+# 12.42 Synchronous in JS
+--> Synchronous means the code runs in a particular sequence of instructions given in the program.
+    Each instruction waits for the previous instruction to complete its execution.
+
+console.log('1');
+console.log('2');
+console.log('3');
+console.log('4');
+console.log('5');
+[o/p: 1,2,3,4,5]
+
+--> Asynchronous: Due to synchronous programming, sometimes imp instructions get blocked due to some previous instructions, 
+    which causes a delay in the UI.
+    Asynchronous code execution allows to execute next instructions immediately and doesn't block the flow.
+
+console.log('1');
+console.log('2');
+setTimeout(() => {
+    console.log('3');
+}, 4000); 
+console.log('4');
+console.log('5');
+[o/p: 1,2,4,5,3]
+
+# 12.43 Callbacks
+    A callback is a function passed as an argument to another function.
+
+1)  function sum(a, b){
+        console.log(a+b);
+    }
+    function calculator(a,b, sumCallback){
+        sumCallback(a,b);
+    } 
+    calculator(1,2, sum);
+
+2) const hello = () => {
+    console.log('hii');
+};
+setTimeout(hello, 3000);
+
+--> Callback Hell
+    Callback Hell : Nested callbacks stacked below one another forming a pyramid structure. (Pyramid of Doom)
+    This style of programming becomes difficult to understand & manage.
+
+function getData(dataId, getNextData){
+    setTimeout( () => {
+        console.log('data:', dataId);
+        if(getNextData){
+            getNextData();
+        }
+    }, 2000);
+}
+
+getData(1, () => {
+    console.log('getting data2 ....');
+    getData(2, () => {
+        console.log('getting data3 ....');
+        getData(3, () => {
+            console.log('getting data4 ....');
+            getData(4);
+
+        });
+    });
+});
+[o/p: Jb har task 2-2 sec ke baad execute krna ho
+data: 1
+getting data2 ....
+data: 2
+getting data3 ....
+data: 3
+getting data4 ....
+data: 4]
+
+
+# 12.44 Promises:
+    Promise is for “eventual” completion of task. It is an object in JS.
+    It is a solution to callback hell.
+    let promise = new Promise( (resolve, reject) => { .... } )
+    *resolve & reject are callbacks provided by JS
+
+--> A JavaScript Promise object can be:
+    Pending : the result is undefined
+    Resolved : the result is a value (fulfilled)
+    Rejected : the result is an error object
+    resolve( result )
+    reject( error )
+
+    *Promise has state (pending, fulfilled) & some result (result for resolve & error for reject).
+
+case 1: let promise = new Promise( (resolve, reject) => {
+        console.log('I am a promise');
+    })
+[Console se promise o/p--> I'm a promise and state:pending, result:undefined,
+jbtk resolve ya reject function call nhi hoga state pending hi rhega]
+
+case 2: let promise = new Promise( (resolve, reject) => {
+        console.log('I am a promise');
+        resolve('got the product');
+    })
+[Console se promise o/p--> I'm a promise, state:resolved/fulfilled, result:got the product]
+
+case 3: let promise = new Promise( (resolve, reject) => {
+        console.log('I am a promise');
+        reject('order has been cancelled during to shipping issue');
+    })
+[Console se promise o/p--> I'm a promise, state:rejected, result:Order has been cancelled ... ]
+
+--> Real life me hm promise create nhi krte hain, ye hme kisi 3rd party ya api se milta hai, jisko hm bs handle kr rhe hote hain.
+
+function getData(dataId, getNextdata){
+    return new Promise( (resolve, reject) => {
+      setTimeout( () => {
+        console.log('data:', dataId);
+        resolve('job completed');
+        if(getNextData){
+            getNextData();
+        }
+    }, 5000);  
+    })
+}
+--> console se: result = getData(123);
+--> result [o/p: Promise{state:pending till 5 sec, result: undefined} 
+           after 5 sec: data:123, state:fulfilled ,result:job completed ]
+
+--> Now ab hm promise ko use krna dekhte hain, jo ki hmko kahi aur se milega (jaise api)
+promise.then( ( res ) => { .... } )           //fulfilled ke case me 
+promise.catch( ( err ) ) => { .... } )        // reject hone ke case me 
+
+case 1: const getPromise = () => {
+        return new Promise ( (resolve, reject) =>{
+        console.log('I am Promise');
+        resolve('I am done')
+    });
+};
+
+let promise = getPromise();
+promise.then( (res) => {
+    console.log('promise fulfilled', res);
+});
+-------------------------------------------------
+Case 2: const getPromise = () => {
+        return new Promise ( (resolve, reject) =>{
+        console.log('I am promise');
+        reject('I am gone');
+    });
+};
+
+let promise = getPromise();
+promise.catch( (err) => {
+    console.log('Promise rejected', err);
+});
+-----------------------------------------------------
+
+--> Promise chaining:
+function asyncFunc1(){
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+            console.log('data1');
+            resolve('success');
+        }, 4000)
+    });
+}
+function asyncFunc2(){
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+            console.log('data2');
+            resolve('success');
+        }, 4000)
+    });
+}
+---------------------------------------------
+console.log('fetching data1 ....');
+let p1 = asyncFunc1();
+p1.then( (res) => {
+    console.log('fetching data2 ....');
+    let p2 = asyncFunc2();
+    p2.then( (res) => {});
+});
+------------------------------------------------
+console.log('fetching data1 ....');
+asyncFunc1().then( (res) => {
+    console.log('fetching data2 ....');
+    asyncFunc2().then( (res) => {});
+});
+-------------------------------------------------
+
+function getData(dataId){
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+        console.log('data:', dataId);
+        resolve('success');
+        }, 3000);
+    });
+}
+
+getData(1)
+    .then( (res) => {
+    return getData(2);
+    })
+    .then ( (res) => {
+      console.log(res);
+});
+
+
+# 12.45 Async-Await
+    async function always returns a promise.
+    async function myFunc( ) { .... }
+    await pauses the execution of its surrounding async function until the promise is settled.
+    await can be used only inside async function.
+
+function getData(dataId){
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+        console.log('data:', dataId);
+        resolve('success');
+        }, 3000);
+    });
+}
+
+async function getAllData(){
+    console.log('getting data1 ...');
+    await getData(1);
+    console.log('getting data2 ...');
+    await getData(2);
+    console.log('getting data3 ...');
+    await getData(3);
+    console.log('getting data4 ...');
+    await getData(4);
+}
+
+[o/p: getAllData();
+Promise {<pending>}
+index.html:26 data: 1
+index.html:26 data: 2
+index.html:26 data: 3
+index.html:26 data: 4]
+
+# Summary:
+# Callback Hell
+function getData(dataId, getNextData){
+    setTimeout( () => {
+        console.log('data:', dataId);
+        if(getNextData){
+            getNextData();
+        }
+    }, 2000);
+}
+
+getData(1, () => {
+    console.log('getting data2 ....');
+    getData(2, () => {
+        console.log('getting data3 ....');
+        getData(3, () => {
+            console.log('getting data4 ....');
+            getData(4);
+
+        });
+    });
+});
+
+# Promise chaining
+function getData(dataId){
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+        console.log('data:', dataId);
+        resolve('success');
+        }, 3000);
+    });
+}
+
+console.log('getting data1 ...');
+getData(1)
+    .then( (res) => {
+    console.log('getting data2 ...');
+    return getData(2);
+    })
+    .then ( (res) => {
+    console.log('getting data3 ...');
+    retutn getData(3);
+    })
+    .then( (res) => {
+        console.log(res);
+    });
+
+# Async-Await
+function getData(dataId){
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+        console.log('data:', dataId);
+        resolve('success');
+        }, 3000);
+    });
+}
+
+async function getAllData(){
+    console.log('getting data1 ...');
+    await getData(1);
+    console.log('getting data2 ...');
+    await getData(2);
+    console.log('getting data3 ...');
+    await getData(3);
+    console.log('getting data4 ...');
+    await getData(4);
+}
+
+--> IIFE : Immediately Invoked Function Expression. It can be used only once.
+    IIFE is a function that is called immediately as soon as it is defined.
+
+    Syntax: (function_definition) ();
+    
+    (function (){
+    console.log('Hello Prakash Jha');
+    }) ();
+
+
+# Chapter:13
+
+# 13.46 fetch API (Application Programming Interface)
+--> The fetch API provides an interface for fetching (sending/receiving) resources.
+    It uses Request and Response objects.
+    The fetch() method is used to fetch a resource (data).
+
+    Syntax: let promise = fetch(url, [options])
+
+
+const URL = "https://cat-fact.herokuapp.com/facts";
+
+const getFacts = async () => {
+    console.log ('getting data ...');
+    let response = await fetch(URL);
+    console.log(response);
+};
+[o/p: it will return some output but that won't be completely understandable]
+
+
+--> AJAX is Asynchronous JS and XML
+    JSON is JavaScript Object Notation
+    json() method: returns a second promise that resolves with the result of parsing the response body text as JSON.
+    (Input is JSON, Output is JS Object)
+
+const URL = "https://cat-fact.herokuapp.com/facts";
+
+const getFacts = async () => {
+    console.log ('getting data ...');
+    let response = await fetch(URL);
+    console.log(response);
+    let data = await response.json();
+    console.log(data[0].text);
+};
+[o/p: Cat can be a beautiful Pet]
+
+
+# Mini API Project 1
+<button id="btn">Get a Fact</button>
+<p id="fact"></p>
+
+const URL = "https://catfact.ninja/fact";
+const factPara = document.querySelector('#fact');
+const btn = document.querySelector('#btn');
+
+const getFacts = async () => {
+    console.log ('getting data ...');
+    let response = await fetch(URL);
+    //console.log(response);
+    let data = await response.json();
+    factPara.innerText = data.fact;
+    console.log(data.fact);
+};
+btn.addEventListener('click', getFacts);
+
+# Mini API Project 2
+<button id="btn">Get a Dog Image</button>
+  <br><br>
+  <div id ="div_img" style="width: 600px; height: 500px; background-color: lightgrey; 
+  transition: background-image 0.1s ease; background-image: url('Dog.jpeg');">
+
+<script>
+const URL = "https://dog.ceo/api/breeds/image/random";
+const imgDiv = document.querySelector('#div_img');
+const btn = document.querySelector('#btn');
+
+const getFacts = async () => {
+    console.log ('getting data ...');
+    let response = await fetch(URL);
+    console.log(response);
+    console.log(response.url);
+    let data = await response.json();
+    console.log(data.message);
+    imgDiv.style.backgroundImage = `url('${data.message}')`;
+    imgDiv.style.backgroundSize = "cover"; 
+    imgDiv.style.backgroundPosition = "center";
+};
+btn.addEventListener('click', getFacts);
+</script>
+
+# 13.47 HTTP Request methods & Response status code:
+--> GET, POST, PUT, HEAD
+--> 1. Informational responses (100-199)
+    2. Successful responses (200-299)
+    3. Redirectional messages (300-399)
+    4. Client error messages (400-499)
+    5. Server error messages (500-599)
+
+--> HTTp response headers also contain details about the responses, such as content type, HTTp status code etc.
+
 
 
 # Completed !!!

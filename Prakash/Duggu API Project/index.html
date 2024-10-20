@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Duggu Project_Bat_Ball_Wicket_Game</title>
+</head>
+<body>
+  <br><br>
+  <button id="btn">Get a Dog Image</button>
+  <br><br>
+  <div id ="div_img" style="width: 600px; height: 500px; background-color: lightgrey; 
+  transition: background-image 0.1s ease; background-image: url('Dog.jpeg');">
+
+<Script>
+const URL = "https://dog.ceo/api/breeds/image/random";
+const imgDiv = document.querySelector('#div_img');
+const btn = document.querySelector('#btn');
+
+const getFacts = async () => {
+    console.log ('getting data ...');
+    let response = await fetch(URL);
+    console.log(response);
+    console.log(response.url);
+    let data = await response.json();
+    console.log(data.message);
+    imgDiv.style.backgroundImage = `url('${data.message}')`;
+    imgDiv.style.backgroundSize = "cover"; 
+    imgDiv.style.backgroundPosition = "center";
+};
+btn.addEventListener('click', getFacts);
+</Script>
+</body>
+</html>
